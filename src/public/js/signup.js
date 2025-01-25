@@ -8,9 +8,9 @@ $(function () {
     if (window.FileReader) {
       const uploadFile = $(this)[0].files[0],
         fileType = uploadFile["type"],
-        validImageType = ["image/jpg", "image/jpeg", "image/png"];
+        validImageType = ["image/jpg", "image/jpeg", "image/png", "image.webp"];
       if (!validImageType.includes(fileType)) {
-        alert("Please insert jpg, jpeg and png!");
+        alert("Please insert jpg, jpeg, webp and png!");
       } else {
         if (uploadFile) {
           console.log(URL.createObjectURL(uploadFile));

@@ -3,7 +3,7 @@ console.log("Products frontend javascript file");
 $(function () {
   $(".product-collection").on("change", () => {
     const selectValue = $(".product-collection").val();
-    if (selectValue === "DRINK") {
+    if (selectValue === "CHILDREN") {
       $("#product-collection").hide();
       $("#product-volume").show();
     } else {
@@ -74,10 +74,10 @@ function previewFileHandler(input, order) {
 
   const file = $(`.${imgClassName}`).get(0).files[0];
   const fileType = file["type"];
-  const validImageType = ["image/jpg", "image/jpeg", "image/png"];
+  const validImageType = ["image/jpg", "image/jpeg", "image/png", "image/webp"];
 
   if (!validImageType.includes(fileType)) {
-    alert("Please insert only jpg, jpeg and png!");
+    alert("Please insert only jpg, jpeg, webp and png!");
   } else {
     if (file) {
       const reader = new FileReader();

@@ -1,9 +1,10 @@
 import mongoose, { Schema } from "mongoose";
 import {
   ProductCollection,
-  ProductColor,
+
   ProductSize,
   ProductStatus,
+  ProductVolume,
 } from "../libs/enums/product.enum";
 
 const productSchema = new Schema(
@@ -37,13 +38,13 @@ const productSchema = new Schema(
     productSize: {
       type: String,
       enum: ProductSize,
-      default: ProductSize.NORMAL,
+      default: ProductSize.A4,
     },
 
-    productColor: {
+    productVolume: {
       type: String,
-      enum: ProductColor,
-      default: ProductColor.WHITE,
+      enum: ProductVolume,
+      default: ProductVolume.PICTURE_BOOK,
     },
 
     productDesc: {

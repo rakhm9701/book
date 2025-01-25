@@ -1,16 +1,15 @@
 export enum ProductSize {
-  SMALL = "SMALL",
-  NORMAL = "NORMAL",
-  LARGE = "LARGE",
-  SET = "SET",
+  HARDCOVER = "HARDCOVER",
+  POCKET_SIZED = "POCKET_SIZED",
+  OVERSIZED = "OVERSIZED",
+  A4 = "A4",
 }
 
-export enum ProductColor {
-  BLACK = "BLACK",
-  BROWN = "BROWN",
-  GREY = "GREY",
-  GOLD = "GOLD",
-  WHITE = "WHITE",
+export enum ProductVolume {
+  PICTURE_BOOK = "PICTURE_BOOK",
+  CHAPTER_BOOK = "CHAPTER_BOOK",
+  EARLY_READER = "EARLY_READER",
+  FAIRY_TALE = "FAIRY_TALE",
 }
 
 export enum ProductStatus {
@@ -20,9 +19,12 @@ export enum ProductStatus {
 }
 
 export enum ProductCollection {
-  OFFICE = "OFFICE",
-  BEDROOM = "BEDROOM",
-  KITCHEN = "KITCHEN",
-  DININGROOM = "DININGROOM",
+  ACONOMY = "ACONOMY",
+  FANTASY = "FANTASY",
+  BIOGRAPHY = "BIOGRAPHY",
+  SELF_HELP = "SELF_HELP",
+  SCIENCE_FICTION = "SCIENCE_FICTION",
+  HISTORY = "HISTORY",
+  CHILDREN = "CHILDREN",
   OTHER = "OTHER",
 }
