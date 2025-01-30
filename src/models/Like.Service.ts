@@ -38,17 +38,18 @@ class LikeService {
 
     if (exist) {
       await this.likeModel.findOneAndDelete(search).exec();
-      modifier = -1;
+      return modifier = -1;
     } else {
       try {
+        console.log("input:", input);
         await this.likeModel.create(input);
-        modifier = 1;
+       return modifier = 1;
       } catch (err) {
         console.log("ERROR, model:toggleLike:", err);
         throw new Errors(HttpCode.BAD_REQUEST, Message.CREATE_FAILED);
       }
     }
-    return modifier;
+    // return modifier;
   }
 
   //   public async toggleLike(input: LikeInput): Promise<number> {

@@ -66,7 +66,7 @@ class ProductService {
     const productId = shapeIntoMongooseObjectId(id);
 
     let result = await this.productModel
-      .findOne({ _id: productId, productStatus: ProductStatus.PROCESS })
+      .findOne({ _id: productId, productStatus: ProductStatus.PROCESS }).lean()
       .exec();
 
     if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
@@ -78,6 +78,13 @@ class ProductService {
         viewRefId: productId,
         viewGroup: ViewGroup.PRODUCT,
       };
+
+      const like = await this.likeService.checkLikeExistence({
+        memberId: memberId,
+        likeRefId: productId,
+        likeGroup: LikeGroup.PRODUCT,
+      });
+console.log("_------", like)
       const existView = await this.viewService.checkViewExistence(input);
       console.log("exist:", !!existView);
 
@@ -95,8 +102,9 @@ class ProductService {
           )
           .exec();
       }
+      result.like = like;
+      console.log("++++", result)
     }
-
     return result;
   }
 
@@ -117,9 +125,9 @@ class ProductService {
       _id: memberId,
     };
 
-    const resultLike = await this.productModel.findOne(member).exec();
-    if (!resultLike)
-      throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
+    // const resultLike = await this.productModel.findOne(product).exec();
+    // if (!resultLike)
+    //   throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
     if (!product) throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
 
     const likeInput: LikeInput = {

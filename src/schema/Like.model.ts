@@ -14,7 +14,7 @@ const likeSchema = new Schema(
       ref: "Member",
     },
 
-    viewRefId: {
+    likeRefId: {
       type: Schema.Types.ObjectId,
       required: true,
     },

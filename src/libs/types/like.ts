@@ -1,5 +1,4 @@
 import { ObjectId } from "mongoose";
-import { ViewGroup } from "../enums/view.enum";
 import { LikeGroup } from "../enums/like.enum";
 
 export interface Like {

@@ -1,7 +1,7 @@
 {
-  "name": "furnix",
+  "name": "book",
   "version": "1.0.0",
-  "description": "This is burak project backend",
+  "description": "This is book project backend",
   "main": "src/server.ts",
   "scripts": {
     "start": "ts-node src/server.ts",

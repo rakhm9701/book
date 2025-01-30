@@ -57,10 +57,10 @@ productController.getProduct = async (req: ExtendedRequest, res: Response) => {
 productController.likeProduct = async (req: ExtendedRequest, res: Response) => {
   try {
     console.log("likeProduct");
-
-    const productId = shapeIntoMongooseObjectId(req.params.id);
-    
-    const memberId = shapeIntoMongooseObjectId(req.member);
+    const { id } = req.params;
+    const productId = shapeIntoMongooseObjectId(id);
+    console.log("productId", productId);
+    const memberId = shapeIntoMongooseObjectId(req.member?._id);
 
     const result = await productService.likeProduct(memberId, productId);
 
