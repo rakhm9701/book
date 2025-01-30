@@ -36,6 +36,7 @@
               <tr class="thead-light">
                 <th scope="col">T/r</th>
                 <th scope="col">Book Name</th>
+                <th scope="col">Book Author</th>
                 <th scope="col">Book Type</th>
                 <th scope="col">Book Volume</th>
                 <th scope="col">Book Price</th>
@@ -48,6 +49,7 @@
             <tbody style="background: white">
               <td><%= key+1 %></td>
               <td><%= value.productName%></td>
+              <td><%= value.productAuthor%></td>
               <td><%= value.productCollection%></td>
               <td>
                 <%= value.productCollection === 'CHILDREN' ? value.productVolume :
@@ -73,7 +75,7 @@
             style="align-items: flex-end; margin-bottom: 25px"
           >
             <button class="btn btn-primary" id="process-btn">
-              New Book
+              Create New Book
             </button>
           </div>
         </div>
@@ -93,8 +95,15 @@
               <label>Book Name</label>
               <input
                 type="text"
-                placeholder="Name"
+                placeholder="Book Name"
                 name="productName"
+                class="product-name"
+              />
+                <label>Book Author</label>
+                <input
+                type="text"
+                placeholder="Author Name"
+                name="productAuthor"
                 class="product-name"
               />
             </div>

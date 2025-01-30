@@ -20,7 +20,13 @@ const productSchema = new Schema(
       enum: ProductCollection,
       required: true,
     },
+
     productName: {
+      type: String,
+      required: true,
+    },
+
+    productAuthor: {
       type: String,
       required: true,
     },
@@ -55,6 +61,11 @@ const productSchema = new Schema(
     productImages: {
       type: [String],
       default: [],
+    },
+
+    productLikes: {
+      type: Number,
+      default: 0,
     },
 
     productViews: {

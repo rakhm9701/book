@@ -37,6 +37,11 @@ router.get(
   memberController.retriewAuth,
   productController.getProduct
 );
+router.post(
+  "/product/like/:id",
+  memberController.retriewAuth,
+  productController.likeProduct
+);
 
 //**Order */
 router.post(
@@ -56,7 +61,5 @@ router.post(
   memberController.verifyAuth,
   orderController.updateOrder
 );
-
-
 
 export default router;

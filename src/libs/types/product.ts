@@ -10,12 +10,14 @@ export interface Product {
   productStatus: ProductStatus;
   ProductCollection: ProductCollection;
   productName: String;
+  productAuthor: String;
   productPrice: Number;
   productLeftCount: Number;
   productSize: ProductSize;
   productVolume: String;
   productDesc?: String;
   productImages: String[];
+  productLikes: Number;
   productViews: Number;
   createdAt: Date;
   updatedAt: Date;
@@ -33,12 +35,14 @@ export interface ProductInput {
   productStatus?: ProductStatus;
   ProductCollection: ProductCollection;
   productName: String;
+  productAuthor: String;
   productPrice: Number;
   productLeftCount: Number;
   productSize?: ProductSize;
   productVolume?: String;
   productDesc?: String;
   productImages?: String[];
+  productLikes?: Number;
   productViews?: Number;
 }
 
@@ -47,11 +51,13 @@ export interface ProductUpdateInput {
   productStatus?: ProductStatus;
   ProductCollection?: ProductCollection;
   productName?: String;
+  productAuthor?: String;
   productPrice?: Number;
   productLeftCount?: Number;
   productSize?: ProductSize;
   productVolume?: String;
   productDesc?: String;
   productImages?: String[];
+  productLikes?: Number;
   productViews?: Number;
 }

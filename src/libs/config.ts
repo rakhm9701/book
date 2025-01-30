@@ -7,3 +7,9 @@ export const shapeIntoMongooseObjectId = (target: any) => {
     ? new mongoose.Types.ObjectId(target)
     : target;
 };
+
+export interface StatisticModifier {
+  _id: Object;
+  targetKey: string;
+  modifier: number;
+}
