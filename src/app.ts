@@ -54,6 +54,7 @@ app.set("view engine", "ejs");
 app.use("/admin", routerAdmin); //BSSR(SSR):EJS
 app.use("/", router); //SPA: REACT
 
+//Socket.io
 const server = http.createServer(app);
 const io = new SocketIOServer(server, {
   cors: {
