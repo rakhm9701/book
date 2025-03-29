@@ -31,6 +31,18 @@ class AuthService {
     });
   }
 
+  // // login
+  // public async login(identifier: string, password: string): Promise<Member> {
+  //   const user = await this.memberModel
+  //     .findOne(
+  //       this.memberModel.memberNick === identifier ||
+  //         (this.memberModel.memberPassword === identifier && this.memberModel)
+  //           .memberPassword
+  //     )
+  //     .exec();
+  //   return user;
+  // }
+
   //   checkAuth
   public async checkAuth(token: string): Promise<Member> {
     const result: Member = (await jwt.verify(
@@ -40,8 +52,6 @@ class AuthService {
     console.log(`--- [AUTH] memberNick: ${result.memberNick} ---`);
     return result;
   }
-
-
 }
 
 export default AuthService;

@@ -5,6 +5,7 @@ import ProductService from "../models/Product.service";
 import { ProductInput, ProductInquery } from "../libs/types/product";
 import { AdminRequest, ExtendedRequest } from "../libs/types/member";
 import { ProductCollection } from "../libs/enums/product.enum";
+import { shapeIntoMongooseObjectId } from "../libs/config";
 
 const productService = new ProductService();
 const productController: T = {};
@@ -40,11 +41,11 @@ productController.getProduct = async (req: ExtendedRequest, res: Response) => {
   try {
     console.log("getProduct");
 
-    const {id} = req.params
+    const { id } = req.params;
     const memberId = req.member?._id ?? null,
-    result = await productService.getProduct(memberId, id)
+      result = await productService.getProduct(memberId, id);
 
-    res.status(HttpCode.OK).json(result)
+    res.status(HttpCode.OK).json(result);
   } catch (err) {
     console.log("getProduct", err);
     if (err instanceof Errors) res.status(err.code).json(err);
@@ -52,7 +53,24 @@ productController.getProduct = async (req: ExtendedRequest, res: Response) => {
   }
 };
 
-//** SSR**/
+//likeProduct
+productController.likeProduct = async (req: ExtendedRequest, res: Response) => {
+  try {
+    console.log("likeProduct");
+    const { id } = req.params;
+    const productId = shapeIntoMongooseObjectId(id);
+    console.log("productId", productId);
+    const memberId = shapeIntoMongooseObjectId(req.member?._id);
+
+    const result = await productService.likeProduct(memberId, productId);
+
+    res.status(HttpCode.OK).json(result);
+  } catch (err) {
+    console.log("Error, likeProduct:", err);
+  }
+};
+
+//** SSR **/
 // getAllProducts
 productController.getAllProducts = async (req: Request, res: Response) => {
   try {

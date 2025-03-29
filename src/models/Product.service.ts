@@ -1,5 +1,5 @@
 import { ProductStatus } from "../libs/enums/product.enum";
-import { shapeIntoMongooseObjectId } from "../libs/config";
+import { shapeIntoMongooseObjectId, StatisticModifier } from "../libs/config";
 import Errors, { HttpCode, Message } from "../libs/Errors";
 import {
   Product,
@@ -13,14 +13,20 @@ import { ObjectId } from "mongoose";
 import ViewService from "./View.service";
 import { ViewInput } from "../libs/types/view";
 import { ViewGroup } from "../libs/enums/view.enum";
+import { MemberStatus } from "../libs/enums/member.enum";
+import { LikeInput } from "../libs/types/like";
+import { LikeGroup } from "../libs/enums/like.enum";
+import LikeService from "./Like.Service";
 
 class ProductService {
   private readonly productModel;
   public viewService;
+  public likeService;
 
   constructor() {
     this.productModel = ProductModel;
     this.viewService = new ViewService();
+    this.likeService = new LikeService();
   }
 
   //** SPA**/
@@ -60,7 +66,7 @@ class ProductService {
     const productId = shapeIntoMongooseObjectId(id);
 
     let result = await this.productModel
-      .findOne({ _id: productId, productStatus: ProductStatus.PROCESS })
+      .findOne({ _id: productId, productStatus: ProductStatus.PROCESS }).lean()
       .exec();
 
     if (!result) throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
@@ -72,6 +78,13 @@ class ProductService {
         viewRefId: productId,
         viewGroup: ViewGroup.PRODUCT,
       };
+
+      const like = await this.likeService.checkLikeExistence({
+        memberId: memberId,
+        likeRefId: productId,
+        likeGroup: LikeGroup.PRODUCT,
+      });
+console.log("_------", like)
       const existView = await this.viewService.checkViewExistence(input);
       console.log("exist:", !!existView);
 
@@ -89,9 +102,60 @@ class ProductService {
           )
           .exec();
       }
+      result.like = like;
+      console.log("++++", result)
     }
-
     return result;
+  }
+
+  //likeProduct
+  public async likeProduct(
+    memberId: ObjectId,
+    productId: ObjectId
+  ): Promise<Product> {
+    const product = await this.productModel
+      .findOne({
+        _id: productId,
+        productStatus: ProductStatus.PROCESS,
+      })
+      .exec();
+
+    const member = {
+      memberStatus: MemberStatus.ACTIVE,
+      _id: memberId,
+    };
+
+    // const resultLike = await this.productModel.findOne(product).exec();
+    // if (!resultLike)
+    //   throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
+    if (!product) throw new Errors(HttpCode.NOT_FOUND, Message.NO_DATA_FOUND);
+
+    const likeInput: LikeInput = {
+      memberId: memberId,
+      likeRefId: productId,
+      likeGroup: LikeGroup.PRODUCT,
+    };
+    const modifier: number = await this.likeService.toggleLike(likeInput);
+
+    const result = await this.productStatsEditor({
+      _id: productId,
+      targetKey: "productLikes",
+      modifier: modifier,
+    });
+    return result;
+  }
+
+  public async productStatsEditor(input: StatisticModifier): Promise<Product> {
+    const { _id, targetKey, modifier } = input;
+    return await this.productModel
+      .findByIdAndUpdate(
+        _id,
+        { $inc: { [targetKey]: modifier } },
+        {
+          new: true,
+        }
+      )
+      .exec();
   }
 
   //** SSR**/

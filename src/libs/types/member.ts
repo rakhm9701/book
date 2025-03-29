@@ -31,6 +31,7 @@ export interface MemberInput {
 }
 
 export interface LoginInput {
+  memberPhone: any;
   memberNick: string;
   memberPassword: string;
 }

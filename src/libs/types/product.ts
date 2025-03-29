@@ -4,21 +4,25 @@ import {
   ProductStatus,
   ProductSize,
 } from "../enums/product.enum";
+import { Like } from "./like";
 
 export interface Product {
   _id: ObjectId;
   productStatus: ProductStatus;
   ProductCollection: ProductCollection;
   productName: String;
+  productAuthor: String;
   productPrice: Number;
   productLeftCount: Number;
   productSize: ProductSize;
   productVolume: String;
   productDesc?: String;
   productImages: String[];
+  productLikes: Number;
   productViews: Number;
   createdAt: Date;
   updatedAt: Date;
+  like?: Like;
 }
 
 export interface ProductInquery {
@@ -33,12 +37,14 @@ export interface ProductInput {
   productStatus?: ProductStatus;
   ProductCollection: ProductCollection;
   productName: String;
+  productAuthor: String;
   productPrice: Number;
   productLeftCount: Number;
   productSize?: ProductSize;
   productVolume?: String;
   productDesc?: String;
   productImages?: String[];
+  productLikes?: Number;
   productViews?: Number;
 }
 
@@ -47,11 +53,13 @@ export interface ProductUpdateInput {
   productStatus?: ProductStatus;
   ProductCollection?: ProductCollection;
   productName?: String;
+  productAuthor?: String;
   productPrice?: Number;
   productLeftCount?: Number;
   productSize?: ProductSize;
   productVolume?: String;
   productDesc?: String;
   productImages?: String[];
+  productLikes?: Number;
   productViews?: Number;
 }
