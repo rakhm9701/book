@@ -1,11 +1,7 @@
 {
-  "name": "book",
+  "name": "booksaw",
   "version": "1.0.0",
-<<<<<<< HEAD
   "description": "This is booksaw project backend",
-=======
-  "description": "This is book project backend",
->>>>>>> origin/develop
   "main": "src/server.ts",
   "scripts": {
     "start": "ts-node src/server.ts",
