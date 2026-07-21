@@ -1,21 +1,28 @@
-#!/bin/bash
+#!/bin/sh
+set -eu
 
-# PRODUCTION
-git reset --hard
-git checkout master
-git pull origin master
+cd "$(dirname "$0")"
 
-npm i 
-npm run build
-pm2 start process.config.js --env production
+BRANCH="${DEPLOY_BRANCH:-master}"
 
+git fetch origin "$BRANCH"
+git checkout -B "$BRANCH" "origin/$BRANCH"
+git reset --hard "origin/$BRANCH"
 
+cleanup_docker() {
+	docker image prune -f || true
+	docker builder prune -f || true
+}
 
+if docker compose version >/dev/null 2>&1; then
+	docker compose up -d --build
+	docker compose ps
+elif command -v docker-compose >/dev/null 2>&1; then
+	docker-compose up -d --build
+	docker-compose ps
+else
+	echo "Docker Compose is not installed"
+	exit 1
+fi
 
-#DEVELOPMENT
-# git reset --hard
-# git checkout master
-# git pull origin develop
-
-# npm i
-# pm2 start "npm run start:dev" --name=BOOKSAW
+cleanup_docker
