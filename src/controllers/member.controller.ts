@@ -17,6 +17,17 @@ const authService = new AuthService();
 
 const memberController: T = {};
 
+const getAccessToken = (req: Request): string | undefined => {
+  const cookieToken = req.cookies?.["accessToken"];
+  if (cookieToken) return cookieToken;
+
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return undefined;
+
+  const [scheme, token] = authHeader.split(" ");
+  return /^Bearer$/i.test(scheme) && token ? token : undefined;
+};
+
 // getShop
 memberController.getShop = async (req: Request, res: Response) => {
   try {
@@ -42,6 +53,8 @@ memberController.signup = async (req: Request, res: Response) => {
     res.cookie("accessToken", token, {
       maxAge: AUTH_TIMER * 3600 * 1000,
       httpOnly: false,
+      sameSite: "none",
+      secure: true,
     });
 
     res.status(HttpCode.CREATED).json({ member: result, accessToken: token });
@@ -63,6 +76,8 @@ memberController.login = async (req: Request, res: Response) => {
     res.cookie("accessToken", token, {
       maxAge: AUTH_TIMER * 3600 * 1000,
       httpOnly: false,
+      sameSite: "none",
+      secure: true,
     });
 
     res.status(HttpCode.OK).json({ member: result, accessToken: token });
@@ -77,7 +92,12 @@ memberController.login = async (req: Request, res: Response) => {
 memberController.logout = (req: ExtendedRequest, res: Response) => {
   try {
     console.log("logout");
-    res.cookie("accessToken", null, { maxAge: 0, httpOnly: true });
+    res.cookie("accessToken", null, {
+      maxAge: 0,
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+    });
     res.status(HttpCode.OK).json({ logout: true });
   } catch (err) {
     console.log("Error, verifyAuth:", err);
@@ -144,7 +164,7 @@ memberController.verifyAuth = async (
 ) => {
   try {
     console.log("verifyAuth");
-    const token = req.cookies["accessToken"];
+    const token = getAccessToken(req);
     console.log("token:", token);
     if (token) req.member = await authService.checkAuth(token);
     console.log("req.member:", req.member);
@@ -167,7 +187,7 @@ memberController.retriewAuth = async (
   next: NextFunction
 ) => {
   try {
-    const token = req.cookies["accessToken"];
+    const token = getAccessToken(req);
     if (token) req.member = await authService.checkAuth(token);
 
     next();
